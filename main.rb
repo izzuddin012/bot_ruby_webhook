@@ -38,8 +38,8 @@ class Main < Sinatra::Base
     elsif command == '/remote' || command == '/leave'
       reply = create_event(text, command)
     elsif command == '/help'
-      reply = "`/remote <telegram username> <start_date format (DD/MM/YYYY)> <end_date (DD/MM/YYYY)>` - Create remote event\n" +
-              "`/leave <telegram username> <start_date format (DD/MM/YYYY)> <end_date (DD/MM/YYYY)>` - Create leave event\n"
+      reply = "/remote <telegram username> <start_date> <end_date> - Create remote event\n" +
+              "/leave <telegram username> <start_date> <end_date> - Create leave event\n"
     end
     reply# return
   end
