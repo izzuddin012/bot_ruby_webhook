@@ -29,7 +29,7 @@ class Main < Sinatra::Base
   end
 
   def do_something_with_text(text, username)
-
+    reply = text
     splitted_text = text.split
     command = splitted_text[0]
 
