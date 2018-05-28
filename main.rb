@@ -82,7 +82,7 @@ class Main < Sinatra::Base
           "end_dt" => end_date,
           "all_day" => true,
           "rrule" => "",
-          "title" => "#{event == remote ? 'Remote' : 'Cuti'}",
+          "title" => "#{event == "/remote" ? 'Remote' : 'Cuti'}",
           "who" => name,
           "location" => "",
           "notes" => ""
