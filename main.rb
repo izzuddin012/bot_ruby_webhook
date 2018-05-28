@@ -33,10 +33,13 @@ class Main < Sinatra::Base
     splitted_text = text.split
     command = splitted_text[0]
 
-    if command == 'events'
+    if command == '/today'
       reply = fetch_todays_event()
-    elsif command == 'remote' || command == 'cuti'
+    elsif command == '/remote' || command == '/leave'
       reply = create_event(text, command)
+    elsif command == '/help'
+      reply = "`/remote <telegram username> <start_date format (DD/MM/YYYY)> <end_date (DD/MM/YYYY)>` - Create remote event\n`" +
+              "`/leave <telegram username> <start_date format (DD/MM/YYYY)> <end_date (DD/MM/YYYY)>` - Create leave event\n`"
     end
     reply# return
   end
