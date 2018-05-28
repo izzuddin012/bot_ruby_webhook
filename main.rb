@@ -21,11 +21,11 @@ class Main < Sinatra::Base
       message = update['message']
       puts message.to_s
       reply = do_something_with_text(message['text'], message['from']['username'])
-      # settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply, reply_to_message_id: message['message_id'])
+      settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply, reply_to_message_id: message['message_id'])
     end
     200
-    content_type :json
-    reply.to_json
+    # content_type :json
+    # reply.to_json
   end
 
   def do_something_with_text(text, username)
