@@ -30,13 +30,13 @@ class Main < Sinatra::Base
   def do_something_with_text(message, should_send_private)
     reply = ''
     splitted_text = message['text'].split
-    command = splitted_text[0].sub! '@CihuyMyFriendBot', ''
+    command = splitted_text[0]
 
-    if command == '/today'
+    if command.include? '/today'
       reply = fetch_todays_event(message)
-    elsif command == '/remote' || command == '/leave'
+    elsif command.include? '/remote' || command.include? '/leave'
       reply = create_event(text, command)
-    elsif command == '/help'
+    elsif command.include? '/help'
       reply = "/remote <telegram username> <start_date> <end_date> - Create remote event\n" +
               "/leave <telegram username> <start_date> <end_date> - Create leave event\n"
       send_message(message, reply, true)
