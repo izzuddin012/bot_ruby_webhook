@@ -27,7 +27,7 @@ class Main < Sinatra::Base
     # reply.to_json
   end
 
-  def do_something_with_text(message)
+  def do_something_with_text(message, should_send_private)
     reply = ''
     splitted_text = message['text'].split
     command = splitted_text[0]
@@ -39,21 +39,21 @@ class Main < Sinatra::Base
     elsif command == '/help'
       reply = "/remote <telegram username> <start_date> <end_date> - Create remote event\n" +
               "/leave <telegram username> <start_date> <end_date> - Create leave event\n"
+      send_message(message, reply, true)
     end
-    reply
   end
 
   def remove_message(message)
     settings.bot.api.delete_message(chat_id: message['chat']['id'], message_id: message['message_id'])
   end
 
-  def send_message(message, reply)
+  def send_message(message, reply, force_group)
     group_type = message['chat']['type']
-    if group_type == 'private'
-      settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
-    elsif group_type == 'group' || group_type == 'supergroup' 
+    if (group_type == 'group' || group_type == 'supergroup') && !force_group
       settings.bot.api.send_message(chat_id: message['from']['id'], text: reply)
-    end
+    else
+      settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
+    elsif 
   end
 
   def fetch_todays_event(message)
@@ -74,7 +74,7 @@ class Main < Sinatra::Base
       end
       reply = message
     end
-    send_message(message, reply)
+    send_message(message, reply, true)
   end
 
   def create_event(message, event)
@@ -113,6 +113,6 @@ class Main < Sinatra::Base
       end
     end
     remove_message(message)
-    send_message(message, reply)
+    send_message(message, reply, false)
   end
 end
