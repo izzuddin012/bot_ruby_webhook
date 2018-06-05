@@ -70,12 +70,12 @@ class Main < Sinatra::Base
     events = response['events']
 
     if !events.empty? 
-      message = "List event hari ini: \n"
+      raw_reply = "List event hari ini: \n"
       events.each do | event |
-        message += "- #{event['title']}"
-        message += "#{event['who'].empty? ? '' : " - #{event['who']}" }\n"
+        raw_reply += "- #{event['title']}"
+        raw_reply += "#{event['who'].empty? ? '' : " - #{event['who']}" }\n"
       end
-      reply = message
+      reply = raw_reply
     end
     send_message(message, reply, true)
   end
@@ -92,7 +92,7 @@ class Main < Sinatra::Base
         end_date = Date.parse(end_date).strftime("%Y-%m-%d") 
 
         post_params = { 
-          "subcalendar_id" => 2640452,
+          "subcalendar_id" => 5111808,
           "start_dt" => start_date,
           "end_dt" => end_date,
           "all_day" => true,
