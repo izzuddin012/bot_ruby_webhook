@@ -27,7 +27,7 @@ class Main < Sinatra::Base
     # reply.to_json
   end
 
-  def do_something_with_text(message, should_send_private)
+  def do_something_with_text(message)
     reply = ''
     splitted_text = message['text'].split
     command = splitted_text[0]
