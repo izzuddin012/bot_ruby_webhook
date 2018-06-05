@@ -30,7 +30,7 @@ class Main < Sinatra::Base
   def do_something_with_text(message, should_send_private)
     reply = ''
     splitted_text = message['text'].split
-    command = splitted_text[0]
+    command = splitted_text[0].sub! '@CihuyMyFriendBot', ''
 
     if command == '/today'
       reply = fetch_todays_event(message)
@@ -53,7 +53,7 @@ class Main < Sinatra::Base
       settings.bot.api.send_message(chat_id: message['from']['id'], text: reply)
     else
       settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
-    elsif 
+    end
   end
 
   def fetch_todays_event(message)
