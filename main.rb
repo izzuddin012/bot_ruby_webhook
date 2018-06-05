@@ -34,7 +34,7 @@ class Main < Sinatra::Base
 
     if command.include? '/today'
       reply = fetch_todays_event(message)
-    elsif command.include? '/remote' || command.include? '/leave'
+    elsif (command.include? '/remote') || (command.include? '/leave')
       reply = create_event(text, command)
     elsif command.include? '/help'
       reply = "/remote <telegram username> <start_date> <end_date> - Create remote event\n" +
