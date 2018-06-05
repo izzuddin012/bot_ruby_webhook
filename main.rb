@@ -52,7 +52,7 @@ class Main < Sinatra::Base
     if group_type == 'private'
       settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
     elsif group_type == 'group' || group_type == 'supergroup'
-      settings.bot.api.send_message(chat_id: message['from']['username'], text: reply)
+      settings.bot.api.send_message(chat_id: "@#{message['from']['username']}", text: reply)
     end
   end
 
