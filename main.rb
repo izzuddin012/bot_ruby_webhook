@@ -35,7 +35,7 @@ class Main < Sinatra::Base
     if command.include? '/today'
       reply = fetch_todays_event(message)
     elsif (command.include? '/remote') || (command.include? '/leave')
-      reply = create_event(text, command)
+      reply = create_event(message, command)
     elsif command.include? '/help'
       reply = "/remote <telegram username> <start_date> <end_date> - Create remote event\n" +
               "/leave <telegram username> <start_date> <end_date> - Create leave event\n"
@@ -44,12 +44,15 @@ class Main < Sinatra::Base
   end
 
   def remove_message(message)
-    settings.bot.api.delete_message(chat_id: message['chat']['id'], message_id: message['message_id'])
+    message_type = message['chat']['type']
+    if message_type == 'supergroup' || message_type == 'group'
+      settings.bot.api.delete_message(chat_id: message['chat']['id'], message_id: message['message_id'])
+    end
   end
 
   def send_message(message, reply, force_group)
-    group_type = message['chat']['type']
-    if (group_type == 'group' || group_type == 'supergroup') && !force_group
+    message_type = message['chat']['type']
+    if (message_type == 'group' || message_type == 'supergroup') && !force_group
       settings.bot.api.send_message(chat_id: message['from']['id'], text: reply)
     else
       settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
@@ -79,7 +82,7 @@ class Main < Sinatra::Base
 
   def create_event(message, event)
     reply = "Format salah"
-    splitted_text = text.split
+    splitted_text = message['text'].split
     if splitted_text.count == 4
       name = splitted_text[1]
       start_date = splitted_text[2]
@@ -106,8 +109,9 @@ class Main < Sinatra::Base
           payload: post_params.to_json,
           headers: {'Teamup-Token': "#{ENV['TEAMUP_TOKEN']}", 'Content-type': 'application/json'}
         )
+        response_code = response.code
         response = JSON.parse(response.body)
-        reply = "#{response.code == 201 ? "Event berhasil dibuat dengan id #{response['event']['id']}" : 'Event gagal dibuat'}"
+        reply = "#{response_code == 201 ? "Event berhasil dibuat dengan id #{response['event']['id']}" : 'Event gagal dibuat'}"
       rescue ArgumentError  
         reply = 'Format tanggal mulai atau selesai salah'
       end
