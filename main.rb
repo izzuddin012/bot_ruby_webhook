@@ -74,10 +74,10 @@ class Main < Sinatra::Base
       remote_event = []
       leave_event = []
       events.each do | event |
-        name = "#{event['who'].empty? ? "#{event['title']}" : "#{event['who']}" }\n"
-        name.sub /\s?remote\s?/i, ''
-        name.sub /\s?cuti\s?/i, ''
-        name.strip
+        name = "#{event['who'].empty? ? "#{event['title']}" : "#{event['who']}" }"
+        name = name.sub /\s?remote\s?/i, ''
+        name = name.sub /\s?cuti\s?/i, ''
+        name = name.strip
         if event['title'].downcase.include? 'cuti'
           leave_event.push(name)
         elsif event['title'].downcase.include? 'remote'
