@@ -71,9 +71,28 @@ class Main < Sinatra::Base
 
     if !events.empty? 
       raw_reply = "List event hari ini: \n"
+      remote_event = []
+      leave_event = []
       events.each do | event |
-        raw_reply += "- #{event['title']}"
-        raw_reply += "#{event['who'].empty? ? '' : " - #{event['who']}" }\n"
+        name = "#{event['who'].empty? ? "#{event['title']}" : "#{event['who']}" }\n"
+        name.sub /\s?remote\s?/, ''
+        name.sub /\s?cuti\s?/, ''
+        name.strip
+        if event['title'].downcase.include? 'cuti'
+          leave_event.push(name)
+        elsif event['title'].downcase.include? 'remote'
+          leave_event.push(name)
+        end
+      end
+
+      raw_reply += "REMOTE: \n"
+      remote_event.each do | name |
+        raw_reply += "- #{name}\n"
+      end
+
+      raw_reply += "CUTI: \n"
+      leave_event.each do | name |
+        raw_reply += "- #{name}\n"
       end
       reply = raw_reply
     end
