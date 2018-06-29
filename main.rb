@@ -85,12 +85,12 @@ class Main < Sinatra::Base
         end
       end
 
-      raw_reply += "REMOTE: \n"
+      raw_reply += "\nREMOTE: \n"
       remote_event.each do | name |
         raw_reply += "- #{name}\n"
       end
 
-      raw_reply += "CUTI: \n"
+      raw_reply += "\nCUTI: \n"
       leave_event.each do | name |
         raw_reply += "- #{name}\n"
       end
