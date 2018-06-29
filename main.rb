@@ -53,9 +53,9 @@ class Main < Sinatra::Base
   def send_message(message, reply, force_group)
     message_type = message['chat']['type']
     if (message_type == 'group' || message_type == 'supergroup') && !force_group
-      settings.bot.api.send_message(chat_id: message['from']['id'], text: reply)
+      settings.bot.api.send_message(chat_id: message['from']['id'], text: reply, parse_mode: 'Markdown')
     else
-      settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply)
+      settings.bot.api.send_message(chat_id: message['chat']['id'], text: reply, parse_mode: 'Markdown')
     end
   end
 
@@ -70,7 +70,7 @@ class Main < Sinatra::Base
     events = response['events']
 
     if !events.empty? 
-      raw_reply = "List event hari ini: \n"
+      raw_reply = "*List event hari ini:* \n"
       remote_event = []
       leave_event = []
       events.each do | event |
@@ -85,12 +85,12 @@ class Main < Sinatra::Base
         end
       end
 
-      raw_reply += "\nREMOTE: \n"
+      raw_reply += "\n*Remote:* \n"
       remote_event.each do | name |
         raw_reply += "- #{name}\n"
       end
 
-      raw_reply += "\nCUTI: \n"
+      raw_reply += "\n*Cuti:* \n"
       leave_event.each do | name |
         raw_reply += "- #{name}\n"
       end
